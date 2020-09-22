@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/remindersHome">
+
+    <fragment
+        android:id="@+id/remindersHome"
+        android:name="com.example.reminders.remindershome.RemindersHomeFragment"
+        tools:layout="@layout/fragment_reminders_home">
+        <action
+            android:id="@+id/action_remindersHomeFragment_to_reminderDetailFragment"
+            app:destination="@id/reminderDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reminderDetail"
+        android:name="com.example.reminders.reminderdetail.ReminderDetailFragment"
+        tools:layout="@layout/fragment_reminder_detail">
+        <argument
+            android:name="reminderId"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_reminderDetailFragment_to_remindersHomeFragment"
+            app:destination="@id/remindersHome"
+            />
+    </fragment>
+
+</navigation>
