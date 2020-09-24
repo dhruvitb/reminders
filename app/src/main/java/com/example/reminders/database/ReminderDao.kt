@@ -1,0 +1,22 @@
+package com.example.reminders.database
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
+
+@Dao
+interface ReminderDao {
+    @Insert
+    fun add(reminder: Reminder)
+
+    @Update
+    fun update(reminder: Reminder)
+
+    @Query("SELECT * FROM reminders")
+    fun getAll(): LiveData<List<Reminder>>
+
+    @Query("SELECT * FROM reminders WHERE :reminderId = id")
+    fun getReminder(reminderId: Int): Reminder
+}
