@@ -1,22 +1,40 @@
 package com.example.reminders.remindershome
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.reminders.database.AppDatabase
+import com.example.reminders.database.Reminder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class RemindersHomeViewModel(database: AppDatabase) : ViewModel() {
+class RemindersHomeViewModel(private val database: AppDatabase) : ViewModel() {
     private val _addSuccess = MutableLiveData<Boolean>()
     val addSuccess: LiveData<Boolean>
         get() = _addSuccess
 
+    val allReminders = database.reminderDao.getAll()
+
     fun addNewReminder() {
         _addSuccess.value = true
+        val reminder = Reminder(0, "testing title", "testing description")
+        // TODO make sure this use of threads is correct
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                database.reminderDao.add(reminder)
+            }
+        }
     }
 
     fun finishAdding() {
         _addSuccess.value = false
+    }
+
+    fun deleteAll() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                database.reminderDao.deleteAll()
+            }
+        }
     }
 }
 

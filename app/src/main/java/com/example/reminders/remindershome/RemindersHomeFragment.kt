@@ -30,6 +30,11 @@ class RemindersHomeFragment : Fragment() {
                 viewModel.finishAdding()
             }
         })
+
+        viewModel.allReminders.observe(viewLifecycleOwner, {
+            // TODO do stuff with the actual list of reminders
+        })
+
         return binding.root
     }
 }
