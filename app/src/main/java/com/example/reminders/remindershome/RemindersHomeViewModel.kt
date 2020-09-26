@@ -7,26 +7,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RemindersHomeViewModel(private val database: AppDatabase) : ViewModel() {
-    private val _addSuccess = MutableLiveData<Boolean>()
-    val addSuccess: LiveData<Boolean>
-        get() = _addSuccess
-
+class RemindersHomeViewModel (private val database: AppDatabase) : ViewModel() {
     val allReminders = database.reminderDao.getAll()
 
+    private val _navigateToNewReminder = MutableLiveData<Reminder>()
+    val navigateToNewReminder: LiveData<Reminder>
+        get() = _navigateToNewReminder
+
     fun addNewReminder() {
-        _addSuccess.value = true
-        val reminder = Reminder(0, "testing title", "testing description")
-        // TODO make sure this use of threads is correct
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                database.reminderDao.add(reminder)
-            }
-        }
+        _navigateToNewReminder.value = Reminder(0, "", "")
     }
 
-    fun finishAdding() {
-        _addSuccess.value = false
+    fun finishNewReminderNavigation() {
+        _navigateToNewReminder.value = null
     }
 
     fun deleteAll() {

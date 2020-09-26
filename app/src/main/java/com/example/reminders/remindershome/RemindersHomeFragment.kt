@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.databinding.FragmentRemindersHomeBinding
 
@@ -19,15 +19,19 @@ class RemindersHomeFragment : Fragment() {
         val binding = FragmentRemindersHomeBinding
             .inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)
-        val viewModelFactory = RemindersHomeViewModelFactory(database)
-        val viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(RemindersHomeViewModel::class.java)
+        val viewModel: RemindersHomeViewModel by viewModels {
+            RemindersHomeViewModelFactory(database)
+        }
         binding.viewModel = viewModel
 
-        viewModel.addSuccess.observe(viewLifecycleOwner, {
-            if (it == true) {
-                Toast.makeText(activity, "added a new reminder", Toast.LENGTH_SHORT).show()
-                viewModel.finishAdding()
+        viewModel.navigateToNewReminder.observe(viewLifecycleOwner, {
+            it?.let {
+                this.findNavController()
+                    .navigate(
+                        RemindersHomeFragmentDirections
+                            .actionRemindersHomeFragmentToReminderDetailFragment(0)
+                    )
+                viewModel.finishNewReminderNavigation()
             }
         })
 
