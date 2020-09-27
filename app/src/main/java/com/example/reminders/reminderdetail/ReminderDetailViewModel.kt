@@ -1,8 +1,6 @@
 package com.example.reminders.reminderdetail
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.database.Reminder
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +11,9 @@ class ReminderDetailViewModel(
     private val database: AppDatabase, private val reminderId: Int?
 ) : ViewModel() {
     var reminder: Reminder? = null
+    private val _saveReminderClicked = MutableLiveData<Boolean>()
+    val saveReminderClicked: LiveData<Boolean>
+        get() = _saveReminderClicked
 
     init {
         reminderId?.let {
@@ -22,6 +23,24 @@ class ReminderDetailViewModel(
                     reminder = database.reminderDao.getReminder(reminderId)
                 }
             }
+        }
+    }
+
+    fun saveReminderClicked() {
+        _saveReminderClicked.value = true
+    }
+
+    fun saveReminder(reminderId: Int, title: String, description: String) {
+        val newReminder = Reminder(reminderId, title, description)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                if (reminderId != 0) {
+                    database.reminderDao.update(newReminder)
+                } else {
+                    database.reminderDao.add(newReminder)
+                }
+            }
+            _saveReminderClicked.value = false
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.databinding.FragmentRemindersHomeBinding
 
@@ -24,6 +25,12 @@ class RemindersHomeFragment : Fragment() {
         }
         binding.viewModel = viewModel
 
+        val remindersAdapter = RemindersAdapter()
+        binding.remindersRecyclerview.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = remindersAdapter
+        }
+
         viewModel.navigateToNewReminder.observe(viewLifecycleOwner, {
             it?.let {
                 this.findNavController()
@@ -36,7 +43,7 @@ class RemindersHomeFragment : Fragment() {
         })
 
         viewModel.allReminders.observe(viewLifecycleOwner, {
-            // TODO do stuff with the actual list of reminders
+            remindersAdapter.submitList(it)
         })
 
         return binding.root

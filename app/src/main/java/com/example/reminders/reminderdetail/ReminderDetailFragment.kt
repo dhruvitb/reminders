@@ -11,21 +11,42 @@ import com.example.reminders.database.AppDatabase
 import com.example.reminders.databinding.FragmentReminderDetailBinding
 
 class ReminderDetailFragment : Fragment() {
+    private lateinit var binding: FragmentReminderDetailBinding
+    private var reminderId: Int = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
+        val args: ReminderDetailFragmentArgs by navArgs()
+        reminderId = args.reminderId
+        binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)
         val viewModelFactory = RemindersDetailViewModelFactory(
             database,
-            navArgs<ReminderDetailFragmentArgs>().value.reminderId
+            reminderId
         )
         val viewModel =
             ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
         binding.viewModel = viewModel
 
+        viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
+            if (it) {
+                saveReminder()
+            }
+        })
+
         return binding.root
+    }
+
+    private fun saveReminder() {
+        if (binding.reminderDetailTitle.toString().isNotEmpty()) {
+            binding.viewModel?.saveReminder(
+                reminderId,
+                binding.reminderDetailTitle.text.toString(),
+                binding.reminderDetailDescription.text.toString()
+            )
+        }
     }
 }
