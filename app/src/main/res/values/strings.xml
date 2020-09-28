@@ -4,4 +4,5 @@
     <string name="reminder_description">Reminder Description</string>
     <string name="discard">Discard</string>
     <string name="save">Save</string>
+    <string name="edit_reminder">Edit Reminder</string>
 </resources>

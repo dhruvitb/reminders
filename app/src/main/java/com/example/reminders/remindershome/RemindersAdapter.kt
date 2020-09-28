@@ -10,7 +10,13 @@ import com.example.reminders.databinding.ReminderListItemBinding
 
 class RemindersAdapter : ListAdapter<Reminder, RecyclerView.ViewHolder>(ReminderDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ReminderListItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(
+            ReminderListItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
