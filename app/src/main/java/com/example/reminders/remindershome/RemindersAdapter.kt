@@ -2,6 +2,7 @@ package com.example.reminders.remindershome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,10 +35,16 @@ class RemindersAdapter : ListAdapter<Reminder, RecyclerView.ViewHolder>(Reminder
         fun bind(reminder: Reminder) {
             binding.reminderTitle.text = reminder.title
             binding.reminderDescription.text = reminder.description
+            binding.clickListener = ReminderListItemListener {
+                itemView.findNavController().navigate(
+                    RemindersHomeFragmentDirections.actionRemindersHomeFragmentToReminderDetailFragment(
+                        reminder.id
+                    )
+                )
+            }
             binding.executePendingBindings()
         }
     }
-
 }
 
 class ReminderDiffCallback : DiffUtil.ItemCallback<Reminder>() {
@@ -48,4 +55,8 @@ class ReminderDiffCallback : DiffUtil.ItemCallback<Reminder>() {
     override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean {
         return oldItem.title == newItem.title && oldItem.description == oldItem.description
     }
+}
+
+class ReminderListItemListener(val clickListener: () -> Unit) {
+    fun onClick() = clickListener()
 }
