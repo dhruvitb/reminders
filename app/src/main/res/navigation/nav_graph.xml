@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/remindersHome">
 
+    <!-- TODO backstack is getting super long -->
     <fragment
         android:id="@+id/remindersHome"
         android:name="com.example.reminders.remindershome.RemindersHomeFragment"
@@ -20,12 +21,10 @@
         tools:layout="@layout/fragment_reminder_detail">
         <argument
             android:name="reminderId"
-            app:argType="integer"
-            />
+            app:argType="integer" />
         <action
             android:id="@+id/action_reminderDetailFragment_to_remindersHomeFragment"
-            app:destination="@id/remindersHome"
-            />
+            app:destination="@id/remindersHome" />
     </fragment>
 
 </navigation>

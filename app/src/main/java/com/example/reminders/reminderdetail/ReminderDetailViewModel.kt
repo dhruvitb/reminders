@@ -14,6 +14,9 @@ class ReminderDetailViewModel(
     private val _saveReminderClicked = MutableLiveData<Boolean>()
     val saveReminderClicked: LiveData<Boolean>
         get() = _saveReminderClicked
+    private val _navigateHome = MutableLiveData<Boolean>()
+    val navigateHome: LiveData<Boolean>
+        get() = _navigateHome
 
     init {
         reminderId?.let {
@@ -41,7 +44,16 @@ class ReminderDetailViewModel(
                 }
             }
             _saveReminderClicked.value = false
+            _navigateHome.value = true
         }
+    }
+
+    fun discardReminderClicked() {
+        _navigateHome.value = true
+    }
+
+    fun finishNavigating() {
+        _navigateHome.value = false
     }
 }
 

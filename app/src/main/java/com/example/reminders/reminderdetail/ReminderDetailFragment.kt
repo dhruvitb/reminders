@@ -1,11 +1,14 @@
 package com.example.reminders.reminderdetail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.databinding.FragmentReminderDetailBinding
@@ -31,9 +34,26 @@ class ReminderDetailFragment : Fragment() {
             ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
         binding.viewModel = viewModel
 
+        binding.reminderDetailTitle.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) hideKeyboard()
+        }
+
+        binding.reminderDetailDescription.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) hideKeyboard()
+        }
+
         viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
+            if (it) saveReminder()
+        })
+
+        viewModel.navigateHome.observe(viewLifecycleOwner, {
             if (it) {
-                saveReminder()
+                this.findNavController()
+                    .navigate(
+                        ReminderDetailFragmentDirections
+                            .actionReminderDetailFragmentToRemindersHomeFragment()
+                    )
+                viewModel.finishNavigating()
             }
         })
 
@@ -48,5 +68,11 @@ class ReminderDetailFragment : Fragment() {
                 binding.reminderDetailDescription.text.toString()
             )
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 }
