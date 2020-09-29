@@ -38,11 +38,8 @@ class ReminderDetailViewModel(
     fun saveReminder(newReminder: Reminder) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                if (newReminder.id != 0) {
-                    database.reminderDao.update(newReminder)
-                } else {
-                    database.reminderDao.add(newReminder)
-                }
+                if (newReminder.id != 0) database.reminderDao.update(newReminder)
+                else database.reminderDao.add(newReminder)
             }
             _saveReminderClicked.value = false
             _navigateHome.value = true

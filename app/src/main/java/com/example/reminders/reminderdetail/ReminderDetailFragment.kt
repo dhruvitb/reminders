@@ -12,6 +12,7 @@ import com.example.reminders.database.AppDatabase
 import com.example.reminders.database.Reminder
 import com.example.reminders.databinding.FragmentReminderDetailBinding
 import com.example.reminders.hideKeyboardFrom
+import com.example.reminders.makeNotification
 
 class ReminderDetailFragment : Fragment() {
     private lateinit var binding: FragmentReminderDetailBinding
@@ -40,13 +41,13 @@ class ReminderDetailFragment : Fragment() {
 
         viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
             if (it) {
-                binding.viewModel.saveReminder(
-                    Reminder(
-                        reminderId,
-                        binding.reminderDetailTitle.text.toString(),
-                        binding.reminderDetailDescription.text.toString()
-                    )
+                val reminder = Reminder(
+                    reminderId,
+                    binding.reminderDetailTitle.text.toString(),
+                    binding.reminderDetailDescription.text.toString()
                 )
+                viewModel.saveReminder(reminder)
+                makeNotification(requireContext(), reminder)
             }
         })
 
