@@ -40,7 +40,13 @@ class ReminderDetailFragment : Fragment() {
 
         viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
             if (it) {
-                saveReminder()
+                binding.viewModel.saveReminder(
+                    Reminder(
+                        reminderId,
+                        binding.reminderDetailTitle.text.toString(),
+                        binding.reminderDetailDescription.text.toString()
+                    )
+                )
             }
         })
 
@@ -57,14 +63,5 @@ class ReminderDetailFragment : Fragment() {
         })
 
         return binding.root
-    }
-
-    private fun saveReminder() {
-        val reminder = Reminder(
-            reminderId,
-            binding.reminderDetailTitle.text.toString(),
-            binding.reminderDetailDescription.text.toString()
-        )
-        binding.viewModel?.saveReminder(reminder)
     }
 }
