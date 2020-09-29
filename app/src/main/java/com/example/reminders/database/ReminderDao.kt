@@ -1,7 +1,10 @@
 package com.example.reminders.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ReminderDao {
@@ -11,8 +14,8 @@ interface ReminderDao {
     @Update
     fun update(reminder: Reminder)
 
-    @Delete
-    fun delete(reminder: Reminder)
+    @Query("DELETE FROM reminders WHERE :reminderId = id")
+    fun delete(reminderId: Int)
 
     @Query("DELETE FROM reminders")
     fun deleteAll()

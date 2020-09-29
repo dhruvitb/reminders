@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.reminders.database.AppDatabase
+import com.example.reminders.database.Reminder
 import com.example.reminders.databinding.FragmentReminderDetailBinding
+import com.example.reminders.hideKeyboardFrom
 
 class ReminderDetailFragment : Fragment() {
     private lateinit var binding: FragmentReminderDetailBinding
@@ -32,12 +34,19 @@ class ReminderDetailFragment : Fragment() {
             ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
         binding.viewModel = viewModel
 
+        if (reminderId == 0) {
+            binding.deleteReminder.visibility = View.GONE
+        }
+
         viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
-            if (it) saveReminder()
+            if (it) {
+                saveReminder()
+            }
         })
 
         viewModel.navigateHome.observe(viewLifecycleOwner, {
             if (it) {
+                hideKeyboardFrom(requireContext(), requireView())
                 this.findNavController()
                     .navigate(
                         ReminderDetailFragmentDirections
@@ -51,12 +60,11 @@ class ReminderDetailFragment : Fragment() {
     }
 
     private fun saveReminder() {
-        if (binding.reminderDetailTitle.toString().isNotEmpty()) {
-            binding.viewModel?.saveReminder(
-                reminderId,
-                binding.reminderDetailTitle.text.toString(),
-                binding.reminderDetailDescription.text.toString()
-            )
-        }
+        val reminder = Reminder(
+            reminderId,
+            binding.reminderDetailTitle.text.toString(),
+            binding.reminderDetailDescription.text.toString()
+        )
+        binding.viewModel?.saveReminder(reminder)
     }
 }

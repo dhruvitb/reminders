@@ -5,4 +5,5 @@
     <string name="discard">Discard</string>
     <string name="save">Save</string>
     <string name="edit_reminder">Edit Reminder</string>
+    <string name="delete">Delete Reminder</string>
 </resources>

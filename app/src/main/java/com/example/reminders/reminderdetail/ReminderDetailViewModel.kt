@@ -8,18 +8,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ReminderDetailViewModel(
-    private val database: AppDatabase, private val reminderId: Int?
+    private val database: AppDatabase, private val reminderId: Int
 ) : ViewModel() {
     var reminder: Reminder? = null
+
     private val _saveReminderClicked = MutableLiveData<Boolean>()
     val saveReminderClicked: LiveData<Boolean>
         get() = _saveReminderClicked
+
     private val _navigateHome = MutableLiveData<Boolean>()
     val navigateHome: LiveData<Boolean>
         get() = _navigateHome
 
     init {
-        reminderId?.let {
+        reminderId.let {
             // TODO make sure this use of threads is correct
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
@@ -33,11 +35,10 @@ class ReminderDetailViewModel(
         _saveReminderClicked.value = true
     }
 
-    fun saveReminder(reminderId: Int, title: String, description: String) {
-        val newReminder = Reminder(reminderId, title, description)
+    fun saveReminder(newReminder: Reminder) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                if (reminderId != 0) {
+                if (newReminder.id != 0) {
                     database.reminderDao.update(newReminder)
                 } else {
                     database.reminderDao.add(newReminder)
@@ -45,6 +46,17 @@ class ReminderDetailViewModel(
             }
             _saveReminderClicked.value = false
             _navigateHome.value = true
+        }
+    }
+
+    fun deleteReminder() {
+        reminderId.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    database.reminderDao.delete(reminderId)
+                }
+                _navigateHome.value = true
+            }
         }
     }
 
@@ -58,7 +70,7 @@ class ReminderDetailViewModel(
 }
 
 class RemindersDetailViewModelFactory(
-    private val database: AppDatabase, private val reminderId: Int?
+    private val database: AppDatabase, private val reminderId: Int
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("unchecked_cast")
