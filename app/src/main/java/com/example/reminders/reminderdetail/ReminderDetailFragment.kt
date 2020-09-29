@@ -47,7 +47,13 @@ class ReminderDetailFragment : Fragment() {
                     binding.reminderDetailDescription.text.toString()
                 )
                 viewModel.saveReminder(reminder)
-                makeNotification(requireContext(), reminder)
+            }
+        })
+
+        viewModel.savedReminder.observe(viewLifecycleOwner, {
+            if (it != null) {
+                makeNotification(requireContext(), it)
+                viewModel.finishSave()
             }
         })
 

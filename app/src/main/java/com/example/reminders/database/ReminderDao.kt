@@ -9,7 +9,7 @@ import androidx.room.Update
 @Dao
 interface ReminderDao {
     @Insert
-    fun add(reminder: Reminder)
+    fun add(reminder: Reminder): Long
 
     @Update
     fun update(reminder: Reminder)

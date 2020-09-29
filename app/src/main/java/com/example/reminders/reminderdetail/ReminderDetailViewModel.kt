@@ -20,6 +20,10 @@ class ReminderDetailViewModel(
     val navigateHome: LiveData<Boolean>
         get() = _navigateHome
 
+    private val _savedReminder = MutableLiveData<Reminder>()
+    val savedReminder: LiveData<Reminder>
+        get() = _savedReminder
+
     init {
         reminderId.let {
             // TODO make sure this use of threads is correct
@@ -39,11 +43,24 @@ class ReminderDetailViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 if (newReminder.id != 0) database.reminderDao.update(newReminder)
-                else database.reminderDao.add(newReminder)
+                else {
+                    val newReminderId = database.reminderDao.add(newReminder)
+                    _savedReminder.postValue(
+                        Reminder(
+                            newReminderId.toInt(),
+                            newReminder.title,
+                            newReminder.description
+                        )
+                    )
+                }
             }
             _saveReminderClicked.value = false
             _navigateHome.value = true
         }
+    }
+
+    fun finishSave() {
+        _savedReminder.value = null
     }
 
     fun deleteReminder() {
