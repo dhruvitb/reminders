@@ -24,6 +24,10 @@ class ReminderDetailViewModel(
     val savedReminder: LiveData<Reminder>
         get() = _savedReminder
 
+    private val _removeNotification = MutableLiveData<Int>()
+    val removeNotification: LiveData<Int>
+        get() = _removeNotification
+
     init {
         reminderId.let {
             // TODO make sure this use of threads is correct
@@ -70,6 +74,7 @@ class ReminderDetailViewModel(
                     database.reminderDao.delete(reminderId)
                 }
                 _navigateHome.value = true
+                _removeNotification.value = reminderId
             }
         }
     }

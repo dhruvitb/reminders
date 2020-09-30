@@ -22,6 +22,7 @@ fun makeNotification(context: Context, reminder: Reminder) {
             setContentText(reminder.description)
             priority = NotificationCompat.PRIORITY_DEFAULT
             setSmallIcon(R.drawable.ic_launcher_foreground)
+            setOngoing(true)
         }
     NotificationManagerCompat.from(context).notify(reminder.id, builder.build())
 }

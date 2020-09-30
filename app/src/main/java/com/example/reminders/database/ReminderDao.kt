@@ -17,9 +17,6 @@ interface ReminderDao {
     @Query("DELETE FROM reminders WHERE :reminderId = id")
     fun delete(reminderId: Int)
 
-    @Query("DELETE FROM reminders")
-    fun deleteAll()
-
     @Query("SELECT * FROM reminders")
     fun getAll(): LiveData<List<Reminder>>
 

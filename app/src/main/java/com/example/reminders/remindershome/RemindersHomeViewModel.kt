@@ -1,13 +1,13 @@
 package com.example.reminders.remindershome
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.database.Reminder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class RemindersHomeViewModel (private val database: AppDatabase) : ViewModel() {
+class RemindersHomeViewModel(database: AppDatabase) : ViewModel() {
     val allReminders = database.reminderDao.getAll()
 
     private val _navigateToNewReminder = MutableLiveData<Reminder>()
@@ -20,14 +20,6 @@ class RemindersHomeViewModel (private val database: AppDatabase) : ViewModel() {
 
     fun finishNewReminderNavigation() {
         _navigateToNewReminder.value = null
-    }
-
-    fun deleteAll() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                database.reminderDao.deleteAll()
-            }
-        }
     }
 }
 
