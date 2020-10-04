@@ -11,7 +11,11 @@
         tools:layout="@layout/fragment_reminders_home">
         <action
             android:id="@+id/action_remindersHomeFragment_to_reminderDetailFragment"
-            app:destination="@id/reminderDetail" />
+            app:destination="@id/reminderDetail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -24,6 +28,8 @@
         <action
             android:id="@+id/action_reminderDetailFragment_to_remindersHomeFragment"
             app:destination="@id/remindersHome"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/remindersHome"
             app:popUpToInclusive="true" />
     </fragment>
