@@ -41,18 +41,20 @@ class ReminderDetailViewModel(
     }
 
     fun saveReminder(newReminder: Reminder) {
+        var newReminderId= newReminder.id
         viewModelScope.launch {
-            if (newReminder.id != 0) database.reminderDao.update(newReminder)
-            else {
-                val newReminderId = database.reminderDao.add(newReminder)
-                _savedReminder.postValue(
-                    Reminder(
-                        newReminderId.toInt(),
-                        newReminder.title,
-                        newReminder.description
-                    )
-                )
+            if (newReminder.id != 0) {
+                database.reminderDao.update(newReminder)
+            } else {
+                newReminderId = database.reminderDao.add(newReminder).toInt()
             }
+            _savedReminder.postValue(
+                Reminder(
+                    newReminderId,
+                    newReminder.title,
+                    newReminder.description
+                )
+            )
             _saveReminderClicked.value = false
             _navigateHome.value = true
         }
