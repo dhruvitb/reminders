@@ -17,7 +17,7 @@ import com.example.reminders.makeNotification
 
 class ReminderDetailFragment : Fragment() {
     private lateinit var binding: FragmentReminderDetailBinding
-    private var reminderId: Int = 0
+    private var reminderId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +35,7 @@ class ReminderDetailFragment : Fragment() {
         val viewModel =
             ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         if (reminderId == 0) {
             binding.deleteReminder.visibility = View.GONE

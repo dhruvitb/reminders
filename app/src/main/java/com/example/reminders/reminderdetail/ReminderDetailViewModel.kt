@@ -3,14 +3,14 @@ package com.example.reminders.reminderdetail
 import androidx.lifecycle.*
 import com.example.reminders.database.AppDatabase
 import com.example.reminders.database.Reminder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ReminderDetailViewModel(
     private val database: AppDatabase, private val reminderId: Int
 ) : ViewModel() {
-    var reminder: Reminder? = null
+    private val _reminder = MutableLiveData(Reminder(0, "", ""))
+    val reminder: LiveData<Reminder>
+        get() = _reminder
 
     private val _saveReminderClicked = MutableLiveData<Boolean>()
     val saveReminderClicked: LiveData<Boolean>
@@ -30,11 +30,8 @@ class ReminderDetailViewModel(
 
     init {
         reminderId.let {
-            // TODO make sure this use of threads is correct
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    reminder = database.reminderDao.getReminder(reminderId)
-                }
+                _reminder.value = database.reminderDao.getReminder(reminderId)
             }
         }
     }
@@ -45,18 +42,16 @@ class ReminderDetailViewModel(
 
     fun saveReminder(newReminder: Reminder) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                if (newReminder.id != 0) database.reminderDao.update(newReminder)
-                else {
-                    val newReminderId = database.reminderDao.add(newReminder)
-                    _savedReminder.postValue(
-                        Reminder(
-                            newReminderId.toInt(),
-                            newReminder.title,
-                            newReminder.description
-                        )
+            if (newReminder.id != 0) database.reminderDao.update(newReminder)
+            else {
+                val newReminderId = database.reminderDao.add(newReminder)
+                _savedReminder.postValue(
+                    Reminder(
+                        newReminderId.toInt(),
+                        newReminder.title,
+                        newReminder.description
                     )
-                }
+                )
             }
             _saveReminderClicked.value = false
             _navigateHome.value = true
@@ -70,9 +65,7 @@ class ReminderDetailViewModel(
     fun deleteReminder() {
         reminderId.let {
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    database.reminderDao.delete(reminderId)
-                }
+                database.reminderDao.delete(reminderId)
                 _navigateHome.value = true
                 _removeNotification.value = reminderId
             }
