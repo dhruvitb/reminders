@@ -38,7 +38,7 @@ class RemindersAdapter : ListAdapter<Reminder, RecyclerView.ViewHolder>(Reminder
             binding.clickListener = ReminderListItemListener {
                 itemView.findNavController().navigate(
                     RemindersHomeFragmentDirections.actionRemindersHomeFragmentToReminderDetailFragment(
-                        reminder.id
+                        reminder
                     )
                 )
             }

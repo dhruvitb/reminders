@@ -17,7 +17,7 @@ import com.example.reminders.makeNotification
 
 class ReminderDetailFragment : Fragment() {
     private lateinit var binding: FragmentReminderDetailBinding
-    private var reminderId = 0
+    private lateinit var reminder: Reminder
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,30 +25,27 @@ class ReminderDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val args: ReminderDetailFragmentArgs by navArgs()
-        reminderId = args.reminderId
+        reminder = args.reminder
         binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)
-        val viewModelFactory = RemindersDetailViewModelFactory(
-            database,
-            reminderId
-        )
+        val viewModelFactory = RemindersDetailViewModelFactory(database, reminder)
         val viewModel =
             ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        if (reminderId == 0) {
+        if (reminder.id == 0) {
             binding.deleteReminder.visibility = View.GONE
         }
 
         viewModel.saveReminderClicked.observe(viewLifecycleOwner, {
             if (it) {
-                val reminder = Reminder(
-                    reminderId,
+                val newReminder = Reminder(
+                    reminder.id,
                     binding.reminderDetailTitle.text.toString(),
                     binding.reminderDetailDescription.text.toString()
                 )
-                viewModel.saveReminder(reminder)
+                viewModel.saveReminder(newReminder)
             }
         })
 

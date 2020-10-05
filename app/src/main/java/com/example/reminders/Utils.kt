@@ -22,7 +22,7 @@ fun makeNotification(context: Context, reminder: Reminder) {
     val intent = NavDeepLinkBuilder(context).apply {
         setGraph(R.navigation.nav_graph)
         setDestination(R.id.reminderDetail)
-        setArguments(bundleOf(Pair("reminderId", reminder.id)))
+        setArguments(bundleOf(Pair("reminder", reminder)))
     }.createPendingIntent()
     val builder =
         NotificationCompat.Builder(context, DEFAULT_NOTIFICATION_CHANNEL).apply {

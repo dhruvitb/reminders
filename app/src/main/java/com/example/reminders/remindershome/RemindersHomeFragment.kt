@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.reminders.database.AppDatabase
+import com.example.reminders.database.Reminder
 import com.example.reminders.databinding.FragmentRemindersHomeBinding
 
 class RemindersHomeFragment : Fragment() {
@@ -36,7 +37,13 @@ class RemindersHomeFragment : Fragment() {
                 this.findNavController()
                     .navigate(
                         RemindersHomeFragmentDirections
-                            .actionRemindersHomeFragmentToReminderDetailFragment(0)
+                            .actionRemindersHomeFragmentToReminderDetailFragment(
+                                Reminder(
+                                    0,
+                                    "",
+                                    ""
+                                )
+                            )
                     )
                 viewModel.finishNewReminderNavigation()
             }

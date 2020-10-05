@@ -23,8 +23,8 @@
         android:name="com.example.reminders.reminderdetail.ReminderDetailFragment"
         tools:layout="@layout/fragment_reminder_detail">
         <argument
-            android:name="reminderId"
-            app:argType="integer" />
+            android:name="reminder"
+            app:argType="com.example.reminders.database.Reminder" />
         <action
             android:id="@+id/action_reminderDetailFragment_to_remindersHomeFragment"
             app:destination="@id/remindersHome"

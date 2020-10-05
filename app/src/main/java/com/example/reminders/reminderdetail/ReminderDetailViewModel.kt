@@ -6,9 +6,9 @@ import com.example.reminders.database.Reminder
 import kotlinx.coroutines.launch
 
 class ReminderDetailViewModel(
-    private val database: AppDatabase, private val reminderId: Int
+    private val database: AppDatabase, initialReminder: Reminder
 ) : ViewModel() {
-    private val _reminder = MutableLiveData(Reminder(0, "", ""))
+    private val _reminder = MutableLiveData(initialReminder)
     val reminder: LiveData<Reminder>
         get() = _reminder
 
@@ -28,29 +28,21 @@ class ReminderDetailViewModel(
     val removeNotification: LiveData<Int>
         get() = _removeNotification
 
-    init {
-        reminderId.let {
-            viewModelScope.launch {
-                _reminder.value = database.reminderDao.getReminder(reminderId)
-            }
-        }
-    }
-
     fun saveReminderClicked() {
         _saveReminderClicked.value = true
     }
 
     fun saveReminder(newReminder: Reminder) {
-        var newReminderId= newReminder.id
+        var savedId = newReminder.id
         viewModelScope.launch {
             if (newReminder.id != 0) {
                 database.reminderDao.update(newReminder)
             } else {
-                newReminderId = database.reminderDao.add(newReminder).toInt()
+                savedId = database.reminderDao.add(newReminder).toInt()
             }
             _savedReminder.postValue(
                 Reminder(
-                    newReminderId,
+                    savedId,
                     newReminder.title,
                     newReminder.description
                 )
@@ -65,12 +57,10 @@ class ReminderDetailViewModel(
     }
 
     fun deleteReminder() {
-        reminderId.let {
-            viewModelScope.launch {
-                database.reminderDao.delete(reminderId)
-                _navigateHome.value = true
-                _removeNotification.value = reminderId
-            }
+        viewModelScope.launch {
+            database.reminderDao.delete(_reminder.value!!.id)
+            _navigateHome.value = true
+            _removeNotification.value = _reminder.value!!.id
         }
     }
 
@@ -84,12 +74,12 @@ class ReminderDetailViewModel(
 }
 
 class RemindersDetailViewModelFactory(
-    private val database: AppDatabase, private val reminderId: Int
+    private val database: AppDatabase, private val reminder: Reminder
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("unchecked_cast")
         if (modelClass.isAssignableFrom(ReminderDetailViewModel::class.java)) {
-            return ReminderDetailViewModel(database, reminderId) as T
+            return ReminderDetailViewModel(database, reminder) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
