@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.reminders.database.AppDatabase
@@ -28,9 +28,9 @@ class ReminderDetailFragment : Fragment() {
         reminder = args.reminder
         binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)
-        val viewModelFactory = RemindersDetailViewModelFactory(database, reminder)
-        val viewModel =
-            ViewModelProvider(this, viewModelFactory).get(ReminderDetailViewModel::class.java)
+        val viewModel: ReminderDetailViewModel by viewModels {
+            RemindersDetailViewModelFactory(database, reminder)
+        }
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
