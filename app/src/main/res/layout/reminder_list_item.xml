@@ -12,6 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:onClick="@{() -> clickListener.onClick()}"
         android:padding="12dp">
 
@@ -19,6 +20,7 @@
             android:id="@+id/reminder_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="18sp"

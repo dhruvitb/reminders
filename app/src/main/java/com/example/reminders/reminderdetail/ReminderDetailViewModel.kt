@@ -34,12 +34,13 @@ class ReminderDetailViewModel(
 
     fun saveReminder(newReminder: Reminder) {
         var savedId = newReminder.id
+        if (newReminder.title.isBlank()) {
+            _saveReminderClicked.value = false
+            return
+        }
         viewModelScope.launch {
-            if (newReminder.id != 0) {
-                database.reminderDao.update(newReminder)
-            } else {
-                savedId = database.reminderDao.add(newReminder).toInt()
-            }
+            if (newReminder.id != 0) database.reminderDao.update(newReminder)
+            else savedId = database.reminderDao.add(newReminder).toInt()
             _savedReminder.postValue(
                 Reminder(
                     savedId,

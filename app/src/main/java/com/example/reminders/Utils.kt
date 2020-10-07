@@ -33,6 +33,7 @@ fun makeNotification(context: Context, reminder: Reminder) {
             setOngoing(true)
             setContentIntent(intent)
             setGroup(DEFAULT_NOTIFICATION_GROUP)
+            setVibrate(LongArray(0))
         }
     NotificationManagerCompat.from(context).notify(reminder.id, builder.build())
 }
