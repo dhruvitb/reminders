@@ -10,4 +10,4 @@ Set small reminders/TODOs that you don't necessarily know when you have time to 
 The reminders show as notifications that cannot be swiped away, so that you can't forget them! Clicking on the notification brings up
 the reminder in the app, which is where you can remove it to also clear the notification.
 
-![reminders demo](https://media0.giphy.com/media/MMtwibRzm3eWtdUaiO/giphy.gif)
+![reminders demo](https://media2.giphy.com/media/yVjrrNcld5ERZ2uY5K/giphy.gif)
