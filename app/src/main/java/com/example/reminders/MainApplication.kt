@@ -14,9 +14,10 @@ class MainApplication : Application() {
         }
 
         val notificationChannel = NotificationChannel(
-            DEFAULT_NOTIFICATION_CHANNEL, "Reminders", NotificationManager.IMPORTANCE_DEFAULT
+            resources.getString(R.string.default_notification_channel), "Reminders", NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "Default Notification Category"
+            description = resources.getString(R.string.notification_channel_description)
+            setShowBadge(false)
         }
         NotificationManagerCompat.from(this)
             .createNotificationChannel(notificationChannel)

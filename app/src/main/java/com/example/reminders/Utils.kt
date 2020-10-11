@@ -10,9 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.reminders.database.Reminder
 
-const val DEFAULT_NOTIFICATION_CHANNEL = "default"
-const val DEFAULT_NOTIFICATION_GROUP = "default"
-
 fun hideKeyboardFrom(context: Context, view: View) {
     val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -25,14 +22,17 @@ fun makeNotification(context: Context, reminder: Reminder) {
         setArguments(bundleOf(Pair("reminder", reminder)))
     }.createPendingIntent()
     val builder =
-        NotificationCompat.Builder(context, DEFAULT_NOTIFICATION_CHANNEL).apply {
+        NotificationCompat.Builder(
+            context,
+            context.getString(R.string.default_notification_channel)
+        ).apply {
             setContentTitle(reminder.title)
             setContentText(reminder.description)
             priority = NotificationCompat.PRIORITY_DEFAULT
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setOngoing(true)
             setContentIntent(intent)
-            setGroup(DEFAULT_NOTIFICATION_GROUP)
+            setGroup(context.getString(R.string.default_notification_group))
             setVibrate(LongArray(0))
         }
     NotificationManagerCompat.from(context).notify(reminder.id, builder.build())

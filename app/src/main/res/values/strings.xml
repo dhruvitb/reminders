@@ -6,4 +6,7 @@
     <string name="save">Save</string>
     <string name="edit_reminder">Edit Reminder</string>
     <string name="delete">Delete Reminder</string>
+    <string name="notification_channel_description">Default Notification Category</string>
+    <string name="default_notification_channel">default</string>
+    <string name="default_notification_group">default</string>
 </resources>
