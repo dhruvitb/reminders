@@ -14,7 +14,9 @@ class MainApplication : Application() {
         }
 
         val notificationChannel = NotificationChannel(
-            resources.getString(R.string.default_notification_channel), "Reminders", NotificationManager.IMPORTANCE_DEFAULT
+            resources.getString(R.string.default_notification_channel),
+            "Reminders",
+            NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = resources.getString(R.string.notification_channel_description)
             setShowBadge(false)
