@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,51 +9,57 @@
             type="com.example.reminders.remindershome.ReminderListItemListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> clickListener.onClick()}"
-        android:padding="12dp">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp">
 
-        <TextView
-            android:id="@+id/reminder_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/reminder_description"
-            app:layout_constraintEnd_toStartOf="@id/edit_chevron"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Reminder Title" />
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> clickListener.onClick()}"
+            android:padding="12dp">
 
-        <TextView
-            android:id="@+id/reminder_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constraintEnd_toStartOf="@id/edit_chevron"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reminder_title"
-            tools:text="Reminder Description" />
+            <TextView
+                android:id="@+id/reminder_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@id/reminder_description"
+                app:layout_constraintEnd_toStartOf="@id/edit_chevron"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Reminder Title" />
 
-        <ImageView
-            android:id="@+id/edit_chevron"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/edit_reminder"
-            app:layout_constraintBottom_toBottomOf="@+id/reminder_description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/reminder_title"
-            app:srcCompat="@drawable/ic_chevron_right" />
+            <TextView
+                android:id="@+id/reminder_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintEnd_toStartOf="@id/edit_chevron"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reminder_title"
+                tools:text="Reminder Description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/edit_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/edit_reminder"
+                app:layout_constraintBottom_toBottomOf="@+id/reminder_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/reminder_title"
+                app:srcCompat="@drawable/ic_chevron_right" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
