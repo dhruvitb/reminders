@@ -17,7 +17,7 @@ class RemindersHomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentRemindersHomeBinding
             .inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)

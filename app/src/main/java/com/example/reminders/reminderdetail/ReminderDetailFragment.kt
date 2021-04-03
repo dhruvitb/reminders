@@ -16,17 +16,14 @@ import com.example.reminders.hideKeyboardFrom
 import com.example.reminders.makeNotification
 
 class ReminderDetailFragment : Fragment() {
-    private lateinit var binding: FragmentReminderDetailBinding
-    private lateinit var reminder: Reminder
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val args: ReminderDetailFragmentArgs by navArgs()
-        reminder = args.reminder
-        binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
+        val reminder = args.reminder
+        val binding = FragmentReminderDetailBinding.inflate(inflater, container, false)
         val database = AppDatabase.getInstance(requireActivity().applicationContext)
         val viewModel: ReminderDetailViewModel by viewModels {
             RemindersDetailViewModelFactory(database, reminder)
