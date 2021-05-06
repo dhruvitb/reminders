@@ -62,11 +62,7 @@ class ReminderDetailFragment : Fragment() {
         viewModel.navigateHome.observe(viewLifecycleOwner, {
             if (it) {
                 hideKeyboardFrom(requireContext(), requireView())
-                this.findNavController()
-                    .navigate(
-                        ReminderDetailFragmentDirections
-                            .actionReminderDetailFragmentToRemindersHomeFragment()
-                    )
+                this.findNavController().popBackStack()
                 viewModel.finishNavigating()
             }
         })

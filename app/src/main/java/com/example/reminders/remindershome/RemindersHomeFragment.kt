@@ -30,6 +30,7 @@ class RemindersHomeFragment : Fragment() {
         binding.remindersRecyclerview.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = remindersAdapter
+            itemAnimator = null
         }
 
         viewModel.navigateToNewReminder.observe(viewLifecycleOwner, {

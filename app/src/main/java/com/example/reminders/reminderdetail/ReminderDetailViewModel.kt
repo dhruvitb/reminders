@@ -65,10 +65,6 @@ class ReminderDetailViewModel(
         }
     }
 
-    fun discardReminderClicked() {
-        _navigateHome.value = true
-    }
-
     fun finishNavigating() {
         _navigateHome.value = false
     }
